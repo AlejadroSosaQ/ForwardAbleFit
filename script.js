@@ -1,4 +1,4 @@
-// CA Caring Group – Site Script
+// Forward Able LLC – Site Script
 
 // ---- Scroll-triggered nav styling ----
 const nav = document.getElementById('nav');
