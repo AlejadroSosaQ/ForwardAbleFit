@@ -1,5 +1,5 @@
 /* =============================================
-   ForwardAble – Stylesheet
+   CA Caring Group – Stylesheet
    Aesthetic: Warm, organic, editorial trust
    ============================================= */
 
@@ -582,20 +582,25 @@ body {
   box-shadow: var(--shadow-lg);
   max-width: 300px;
   margin: 0 auto;
-  position: relative;
-  z-index: 1;
 }
 .video-frame video {
   width: 100%;
   display: block;
-  border-radius: var(--radius);
 }
-/* Keep accent badges visible above the video */
-.about-visual .about-card-accent {
-  z-index: 2;
+
+/* Badges sit in a row below the video — no absolute positioning */
+.video-badges {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
 }
+.video-badges .about-card-accent {
+  position: static;
+  box-shadow: var(--shadow);
+}
+
 @media (max-width: 900px) {
-  .video-frame {
-    max-width: 240px;
-  }
+  .video-frame { max-width: 240px; }
 }
