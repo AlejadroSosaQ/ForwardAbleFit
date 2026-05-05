@@ -1,5 +1,5 @@
 /* =============================================
-   ForwardAble LLC – Stylesheet
+   ForwardAble – Stylesheet
    Aesthetic: Warm, organic, editorial trust
    ============================================= */
 
@@ -573,4 +573,29 @@ body {
   .hero-actions { flex-direction: column; align-items: center; }
   .contact-form { padding: 28px 20px; }
   .footer-inner { flex-direction: column; }
+}
+
+/* ---- VIDEO (About section) ---- */
+.video-frame {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  max-width: 300px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.video-frame video {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius);
+}
+/* Keep accent badges visible above the video */
+.about-visual .about-card-accent {
+  z-index: 2;
+}
+@media (max-width: 900px) {
+  .video-frame {
+    max-width: 240px;
+  }
 }

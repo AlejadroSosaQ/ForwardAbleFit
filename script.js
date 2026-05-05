@@ -1,4 +1,4 @@
-// Forward Able LLC – Site Script
+// ForwardAble – Site Script
 
 // ---- Scroll-triggered nav styling ----
 const nav = document.getElementById('nav');
