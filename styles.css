@@ -122,12 +122,12 @@ body {
   box-shadow: var(--shadow);
 }
 .nav-logo {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--forest);
+  display: flex;
+  align-items: center;
   text-decoration: none;
+  line-height: 1;
 }
+.nav-logo svg { display: block; }
 .nav-links {
   display: flex; align-items: center; gap: 36px;
   list-style: none;
@@ -528,13 +528,13 @@ body {
   flex-wrap: wrap; gap: 24px;
 }
 .footer-logo {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  margin-bottom: 10px;
+  line-height: 1;
 }
+.footer-logo svg { display: block; }
 .footer-brand p { font-size: 0.85rem; max-width: 300px; opacity: 0.75; }
 .footer-links {
   display: flex; gap: 28px; flex-wrap: wrap;

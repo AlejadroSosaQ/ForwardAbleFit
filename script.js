@@ -1,4 +1,4 @@
-// ForwardAble – Site Script
+// CA Caring Group – Site Script
 
 // ---- Scroll-triggered nav styling ----
 const nav = document.getElementById('nav');
