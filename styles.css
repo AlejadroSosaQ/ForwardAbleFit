@@ -122,12 +122,12 @@ body {
   box-shadow: var(--shadow);
 }
 .nav-logo {
-  display: flex;
-  align-items: center;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--forest);
   text-decoration: none;
-  line-height: 1;
 }
-.nav-logo svg { display: block; }
 .nav-links {
   display: flex; align-items: center; gap: 36px;
   list-style: none;
@@ -528,13 +528,13 @@ body {
   flex-wrap: wrap; gap: 24px;
 }
 .footer-logo {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  margin-bottom: 10px;
-  line-height: 1;
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
 }
-.footer-logo svg { display: block; }
 .footer-brand p { font-size: 0.85rem; max-width: 300px; opacity: 0.75; }
 .footer-links {
   display: flex; gap: 28px; flex-wrap: wrap;
@@ -574,99 +574,3 @@ body {
   .contact-form { padding: 28px 20px; }
   .footer-inner { flex-direction: column; }
 }
-
-/* ---- VIDEO (About section) ---- */
-.video-frame {
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  max-width: 300px;
-  margin: 0 auto;
-}
-.video-frame video { width: 100%; display: block; }
-.video-badges {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 16px;
-}
-.video-badges .about-card-accent { position: static; box-shadow: var(--shadow); }
-@media (max-width: 900px) { .video-frame { max-width: 240px; } }
-
-/* ---- SERVICE VIDEO (inside training card) ---- */
-.service-video {
-  margin-top: 20px;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.12);
-  max-width: 260px;        /* keeps it compact, not full-card-width */
-  margin-left: auto;
-  margin-right: auto;
-}
-.service-video video {
-  width: 100%;
-  display: block;
-  border-radius: var(--radius-sm);
-}
-
-/* ---- SERVICE QUOTE ---- */
-.service-quote {
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255,255,255,0.15);
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.88rem;
-  color: var(--amber-light);
-  line-height: 1.6;
-}
-
-/* ---- TESTIMONIALS ---- */
-.testimonials { background: var(--warm-white); }
-.testimonial-grid {
-  max-width: 780px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-.testimonial-card {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 48px;
-  box-shadow: var(--shadow);
-  position: relative;
-}
-.testimonial-quote {
-  font-family: var(--font-display);
-  font-size: 5rem;
-  line-height: 1;
-  color: var(--amber);
-  position: absolute;
-  top: 16px; left: 36px;
-  opacity: 0.35;
-}
-.testimonial-body {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: var(--text);
-  font-style: italic;
-  margin-bottom: 28px;
-  padding-top: 24px;
-}
-.testimonial-author { display: flex; align-items: center; gap: 14px; }
-.testimonial-avatar {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  background: var(--forest);
-  color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display);
-  font-size: 1.1rem; font-weight: 600;
-  flex-shrink: 0;
-}
-.testimonial-author strong { display: block; font-size: 0.95rem; color: var(--forest); }
-.testimonial-author span  { font-size: 0.8rem; color: var(--text-light); }
-@media (max-width: 680px) { .testimonial-card { padding: 32px 24px; } }

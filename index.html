@@ -276,20 +276,24 @@
         </div>
 
         <div class="contact-form">
-          <form id="contactForm">
+          <!-- Submissions go to Google Forms silently via the hidden iframe -->
+          <form id="contactForm"
+                action="https://docs.google.com/forms/d/e/19u5_apdgLvr4dtfI5zBJoplDEz8KjKhEr4mG5a19_Ig/formResponse"
+                method="POST"
+                target="hidden_iframe">
             <div class="form-row">
               <div class="form-group">
                 <label for="name">Your Name</label>
-                <input type="text" id="name" name="name" placeholder="First &amp; last name" required>
+                <input type="text" id="name" name="entry.1962909184" placeholder="First &amp; last name" required>
               </div>
               <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="you@email.com" required>
+                <input type="email" id="email" name="entry.844439373" placeholder="you@email.com" required>
               </div>
             </div>
             <div class="form-group">
               <label for="service">What are you interested in?</label>
-              <select id="service" name="service">
+              <select id="service" name="entry.1292227401">
                 <option value="">Select a service...</option>
                 <option>1:1 Adaptive Personal Training</option>
                 <option>1-1 Learn to Ride Program</option>
@@ -298,11 +302,13 @@
             </div>
             <div class="form-group">
               <label for="message">Tell us a bit about your situation</label>
-              <textarea id="message" name="message" rows="4" placeholder="Share as much or as little as you'd like..."></textarea>
+              <textarea id="message" name="entry.1974991366" rows="4" placeholder="Share as much or as little as you'd like..."></textarea>
             </div>
             <button type="submit" class="btn btn-primary full-width">Send Message →</button>
             <p class="form-note">We typically respond within 24 hours.</p>
           </form>
+          <!-- Google Forms response is captured here; visitor never leaves the page -->
+          <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </div>
       </div>
     </div>

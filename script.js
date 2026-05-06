@@ -60,19 +60,30 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ---- Contact form ----
+// ---- Contact form → Google Forms (hidden iframe) ----
 const form = document.getElementById('contactForm');
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
+const hiddenFrame = document.getElementById('hidden_iframe');
+
+// The iframe fires 'load' once on page init (blank) and again after submission.
+// We use a flag to tell them apart.
+form.addEventListener('submit', () => {
+  form.dataset.submitted = 'true';
+});
+
+hiddenFrame.addEventListener('load', () => {
+  if (form.dataset.submitted !== 'true') return;
+
   const btn = form.querySelector('button[type="submit"]');
   btn.textContent = '✓ Message Sent!';
   btn.style.background = '#4a7c59';
   btn.disabled = true;
+
   setTimeout(() => {
     btn.textContent = 'Send Message →';
     btn.style.background = '';
     btn.disabled = false;
     form.reset();
+    form.dataset.submitted = 'false';
   }, 3000);
 });
 
