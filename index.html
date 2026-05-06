@@ -8,6 +8,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* YouTube embed responsive wrappers */
+    .yt-embed { position: relative; width: 100%; overflow: hidden; border-radius: inherit; }
+    .yt-embed.portrait  { padding-bottom: 177.78%; /* 9:16 for Shorts */ }
+    .yt-embed.landscape { padding-bottom: 56.25%;  /* 16:9 */ }
+    .yt-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+  </style>
 </head>
 <body>
 
@@ -86,9 +93,14 @@
 
         <div class="about-visual">
           <div class="video-frame">
-            <video autoplay muted loop playsinline controls>
-              <source src="bike_promo_video-01.mp4" type="video/mp4">
-            </video>
+            <div class="yt-embed portrait">
+              <iframe
+                src="https://www.youtube.com/embed/WDNJ0RV9JRI?rel=0"
+                title="ForwardAble – Learn to Ride"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+            </div>
           </div>
           <div class="video-badges">
             <div class="about-card-accent">
@@ -145,9 +157,14 @@
             <li>Sensory-aware environment</li>
           </ul>
           <div class="service-video">
-            <video autoplay muted loop playsinline controls>
-              <source src="abs_training_video-01.mp4" type="video/mp4">
-            </video>
+            <div class="yt-embed landscape">
+              <iframe
+                src="https://www.youtube.com/embed/y2qINf0PZ_I?rel=0"
+                title="ForwardAble – Adaptive Training"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+            </div>
           </div>
         </div>
 
