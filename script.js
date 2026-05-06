@@ -118,15 +118,15 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// ---- Kiosk auto-scroll mode (?kiosk in URL) ----
-if (new URLSearchParams(window.location.search).has('kiosk')) {
+// ---- Kiosk auto-scroll mode ----
+// Activate by visiting: https://forwardablefit.com/?kiosk
+if (window.location.search.indexOf('kiosk') !== -1) {
 
-  const SCROLL_SPEED   = 50;   // px per second — increase to scroll faster
-  const PAUSE_AT_TOP   = 3000; // ms to wait before starting each loop
+  const SCROLL_SPEED    = 50;   // px per second — raise to scroll faster
+  const PAUSE_AT_TOP    = 3000; // ms to wait before each loop starts
   const PAUSE_AT_BOTTOM = 2500; // ms to pause at the bottom before resetting
 
   let lastTimestamp = null;
-  let animFrame = null;
 
   function scrollStep(timestamp) {
     if (!lastTimestamp) lastTimestamp = timestamp;
@@ -136,23 +136,23 @@ if (new URLSearchParams(window.location.search).has('kiosk')) {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
     if (window.scrollY >= maxScroll - 2) {
-      // Reached the bottom — pause, then reset to top and loop
+      // Reached the bottom — pause, scroll back to top, then loop
       lastTimestamp = null;
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setTimeout(() => {
-          animFrame = requestAnimationFrame(scrollStep);
+          requestAnimationFrame(scrollStep);
         }, PAUSE_AT_TOP);
       }, PAUSE_AT_BOTTOM);
       return;
     }
 
     window.scrollBy(0, (SCROLL_SPEED * elapsed) / 1000);
-    animFrame = requestAnimationFrame(scrollStep);
+    requestAnimationFrame(scrollStep);
   }
 
-  // Kick off after initial pause
+  // Start after initial pause
   setTimeout(() => {
-    animFrame = requestAnimationFrame(scrollStep);
+    requestAnimationFrame(scrollStep);
   }, PAUSE_AT_TOP);
 }
