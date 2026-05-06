@@ -11,9 +11,20 @@
   <style>
     /* YouTube embed responsive wrappers */
     .yt-embed { position: relative; width: 100%; overflow: hidden; border-radius: inherit; }
-    .yt-embed.portrait  { padding-bottom: 177.78%; /* 9:16 for Shorts */ }
-    .yt-embed.landscape { padding-bottom: 56.25%;  /* 16:9 */ }
+    .yt-embed.portrait  { padding-bottom: 177.78%; }
+    .yt-embed.landscape { padding-bottom: 56.25%; }
     .yt-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+    /* Testimonial section */
+    .testimonials { background: var(--warm-white, #fdfaf6); }
+    .testimonial-grid { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+    .testimonial-card { background: #fff; border: 1px solid var(--border, #e5e0d8); border-radius: var(--radius, 16px); padding: 48px; box-shadow: var(--shadow, 0 2px 16px rgba(0,0,0,0.07)); position: relative; }
+    .testimonial-quote { font-family: var(--font-display, 'Fraunces', Georgia, serif); font-size: 5rem; line-height: 1; color: var(--amber, #e8a444); position: absolute; top: 16px; left: 36px; opacity: 0.35; user-select: none; }
+    .testimonial-body { font-size: 1.05rem; line-height: 1.8; color: var(--text, #2d2d2d); font-style: italic; font-family: var(--font-display, 'Fraunces', Georgia, serif); margin-bottom: 28px; padding-top: 32px; }
+    .testimonial-author { display: flex; align-items: center; gap: 14px; }
+    .testimonial-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--forest, #1e3a2f); color: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--font-display, 'Fraunces', Georgia, serif); font-size: 1.1rem; font-weight: 600; flex-shrink: 0; }
+    .testimonial-author strong { display: block; font-size: 0.95rem; color: var(--text, #2d2d2d); }
+    .testimonial-author span { font-size: 0.82rem; color: var(--text-light, #7a7168); }
   </style>
 </head>
 <body>
@@ -263,7 +274,7 @@
         <div class="testimonial-card">
           <div class="testimonial-quote">"</div>
           <p class="testimonial-body">
-            Sofia had never been able to ride a bike. By rebuilding the learning process in a way she was able to achieve progressive milestones, she was not only pedaling on her own, but smiling ear to ear the whole time. That moment changed everything. She carries that confidence into other areas of her life now. The adaptive fitness sessions have also made a huge difference — her coordination, her focus, her willingness to try new things. We are so grateful.
+            Sofia had never been able to ride a bike. By rebuilding the learning process in a way she was able to achieve progressive milestones, she was not only pedaling on her own, but smiling ear to ear the whole time. That moment changed everything. She carries that confidence into other areas of her life now. The adaptive fitness sessions have also made a huge difference — her coordination, her focus, her willingness to try new things. We are so grateful."
           </p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">S</div>
