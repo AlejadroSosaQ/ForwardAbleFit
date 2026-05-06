@@ -1,4 +1,4 @@
-// CA Caring Group – Site Script
+// ForwardAble – Site Script
 
 // ---- Scroll-triggered nav styling ----
 const nav = document.getElementById('nav');
@@ -60,31 +60,49 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ---- Contact form → Google Forms (hidden iframe) ----
+// ---- Contact form → Formspree ----
 const form = document.getElementById('contactForm');
-const hiddenFrame = document.getElementById('hidden_iframe');
+const submitBtn = document.getElementById('submitBtn');
+const formNote = document.getElementById('formNote');
 
-// The iframe fires 'load' once on page init (blank) and again after submission.
-// We use a flag to tell them apart.
-form.addEventListener('submit', () => {
-  form.dataset.submitted = 'true';
-});
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-hiddenFrame.addEventListener('load', () => {
-  if (form.dataset.submitted !== 'true') return;
+  submitBtn.textContent = 'Sending…';
+  submitBtn.disabled = true;
 
-  const btn = form.querySelector('button[type="submit"]');
-  btn.textContent = '✓ Message Sent!';
-  btn.style.background = '#4a7c59';
-  btn.disabled = true;
+  try {
+    const response = await fetch('https://formspree.io/f/xykojboq', {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
 
-  setTimeout(() => {
-    btn.textContent = 'Send Message →';
-    btn.style.background = '';
-    btn.disabled = false;
-    form.reset();
-    form.dataset.submitted = 'false';
-  }, 3000);
+    if (response.ok) {
+      submitBtn.textContent = '✓ Message Sent!';
+      submitBtn.style.background = '#4a7c59';
+      formNote.textContent = "We'll be in touch within 24 hours.";
+      form.reset();
+
+      setTimeout(() => {
+        submitBtn.textContent = 'Send Message →';
+        submitBtn.style.background = '';
+        submitBtn.disabled = false;
+        formNote.textContent = 'We typically respond within 24 hours.';
+      }, 4000);
+    } else {
+      throw new Error('Submission failed');
+    }
+  } catch (err) {
+    submitBtn.textContent = 'Something went wrong — try again';
+    submitBtn.style.background = '#c0392b';
+    submitBtn.disabled = false;
+
+    setTimeout(() => {
+      submitBtn.textContent = 'Send Message →';
+      submitBtn.style.background = '';
+    }, 4000);
+  }
 });
 
 // ---- Smooth anchor scroll with offset ----
