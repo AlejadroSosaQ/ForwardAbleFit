@@ -9,6 +9,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
+    /* Mobile nav — solid background when open */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: var(--warm-white, #fdfaf6);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+        z-index: 200;
+        display: none;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 1.3rem; }
+      .nav-toggle { z-index: 201; position: relative; }
+    }
+
     /* YouTube embed responsive wrappers */
     .yt-embed { position: relative; width: 100%; overflow: hidden; border-radius: inherit; }
     .yt-embed.portrait  { padding-bottom: 177.78%; }
