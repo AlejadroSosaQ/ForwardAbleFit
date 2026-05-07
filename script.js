@@ -122,7 +122,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Activate by visiting: https://forwardablefit.com/?kiosk
 if (window.location.search.indexOf('kiosk') !== -1) {
 
-  const SCROLL_SPEED    = 62.5; // px per second
+  const SCROLL_SPEED    = 31;   // px per second
   const PAUSE_AT_TOP    = 3000; // ms to wait before each loop starts
   const PAUSE_AT_BOTTOM = 2500; // ms to pause at the bottom before resetting
 
