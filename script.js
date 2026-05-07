@@ -118,14 +118,29 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// ---- Kiosk auto-scroll mode ----
+// ---- Kiosk auto-scroll + autoplay mode ----
 // Activate by visiting: https://forwardablefit.com/?kiosk
 if (window.location.search.indexOf('kiosk') !== -1) {
 
-  const SCROLL_SPEED    = 50;   // px per second — raise to scroll faster
+  const SCROLL_SPEED    = 125;  // px per second (2.5× the default of 50)
   const PAUSE_AT_TOP    = 3000; // ms to wait before each loop starts
   const PAUSE_AT_BOTTOM = 2500; // ms to pause at the bottom before resetting
 
+  // Enable autoplay + mute on all YouTube iframes
+  document.querySelectorAll('iframe[src*="youtube.com"]').forEach(iframe => {
+    try {
+      const url = new URL(iframe.src);
+      url.searchParams.set('autoplay', '1');
+      url.searchParams.set('mute', '1');
+      url.searchParams.set('loop', '1');
+      // loop requires playlist param set to the same video ID
+      const videoId = url.pathname.split('/').pop();
+      if (videoId) url.searchParams.set('playlist', videoId);
+      iframe.src = url.toString();
+    } catch (e) { /* skip if URL parse fails */ }
+  });
+
+  // Auto-scroll loop
   let lastTimestamp = null;
 
   function scrollStep(timestamp) {
@@ -136,7 +151,6 @@ if (window.location.search.indexOf('kiosk') !== -1) {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
     if (window.scrollY >= maxScroll - 2) {
-      // Reached the bottom — pause, scroll back to top, then loop
       lastTimestamp = null;
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -151,7 +165,6 @@ if (window.location.search.indexOf('kiosk') !== -1) {
     requestAnimationFrame(scrollStep);
   }
 
-  // Start after initial pause
   setTimeout(() => {
     requestAnimationFrame(scrollStep);
   }, PAUSE_AT_TOP);
