@@ -122,9 +122,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Activate by visiting: https://forwardablefit.com/?kiosk
 if (window.location.search.indexOf('kiosk') !== -1) {
 
-  const SCROLL_SPEED    = 38;   // px per second
-  const PAUSE_AT_TOP    = 3000; // ms to wait before each loop starts
-  const PAUSE_AT_BOTTOM = 2500; // ms to pause at the bottom before resetting
+  const TICK_MS         = 33;    // fire ~30 times per second
+  const PX_PER_TICK     = 1.27;  // 38 px/s ÷ 30 ticks = 1.27 px each tick
+  const PAUSE_AT_TOP    = 3000;  // ms to wait before each loop starts
+  const PAUSE_AT_BOTTOM = 2500;  // ms to pause at the bottom before resetting
 
   // Enable autoplay + mute on all YouTube iframes — staggered to avoid CPU spike
   document.querySelectorAll('iframe[src*="youtube.com"]').forEach((iframe, i) => {
@@ -141,33 +142,28 @@ if (window.location.search.indexOf('kiosk') !== -1) {
     }, i * 1200); // stagger each iframe by 1.2 seconds
   });
 
-  // Auto-scroll loop
-  let lastTimestamp = null;
+  // setInterval-based scroll — each tick moves a fixed number of pixels.
+  // Unlike requestAnimationFrame, missed ticks don't cause catch-up jumps,
+  // so heavy YouTube load can't make the scroll erratic.
+  let kioskTimer = null;
 
-  function scrollStep(timestamp) {
-    if (!lastTimestamp) lastTimestamp = timestamp;
-    // Cap elapsed to 50ms so a stalled frame never causes a huge jump
-    const elapsed = Math.min(timestamp - lastTimestamp, 50);
-    lastTimestamp = timestamp;
-
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-
-    if (window.scrollY >= maxScroll - 2) {
-      lastTimestamp = null;
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+  function startKioskScroll() {
+    kioskTimer = setInterval(() => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (window.scrollY >= maxScroll - 2) {
+        // Reached the bottom — pause, reset, then restart
+        clearInterval(kioskTimer);
+        kioskTimer = null;
         setTimeout(() => {
-          requestAnimationFrame(scrollStep);
-        }, PAUSE_AT_TOP);
-      }, PAUSE_AT_BOTTOM);
-      return;
-    }
-
-    window.scrollBy(0, (SCROLL_SPEED * elapsed) / 1000);
-    requestAnimationFrame(scrollStep);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setTimeout(startKioskScroll, PAUSE_AT_TOP);
+        }, PAUSE_AT_BOTTOM);
+      } else {
+        window.scrollBy(0, PX_PER_TICK);
+      }
+    }, TICK_MS);
   }
 
-  setTimeout(() => {
-    requestAnimationFrame(scrollStep);
-  }, PAUSE_AT_TOP);
+  // Wait before starting so the page can settle after load
+  setTimeout(startKioskScroll, PAUSE_AT_TOP);
 }
