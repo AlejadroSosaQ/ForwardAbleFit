@@ -126,17 +126,19 @@ if (window.location.search.indexOf('kiosk') !== -1) {
   const PAUSE_AT_TOP    = 3000; // ms to wait before each loop starts
   const PAUSE_AT_BOTTOM = 2500; // ms to pause at the bottom before resetting
 
-  // Enable autoplay + mute on all YouTube iframes
-  document.querySelectorAll('iframe[src*="youtube.com"]').forEach(iframe => {
-    try {
-      const url = new URL(iframe.src);
-      url.searchParams.set('autoplay', '1');
-      url.searchParams.set('mute', '1');
-      url.searchParams.set('loop', '1');
-      const videoId = url.pathname.split('/').pop();
-      if (videoId) url.searchParams.set('playlist', videoId);
-      iframe.src = url.toString();
-    } catch (e) { /* skip if URL parse fails */ }
+  // Enable autoplay + mute on all YouTube iframes — staggered to avoid CPU spike
+  document.querySelectorAll('iframe[src*="youtube.com"]').forEach((iframe, i) => {
+    setTimeout(() => {
+      try {
+        const url = new URL(iframe.src);
+        url.searchParams.set('autoplay', '1');
+        url.searchParams.set('mute', '1');
+        url.searchParams.set('loop', '1');
+        const videoId = url.pathname.split('/').pop();
+        if (videoId) url.searchParams.set('playlist', videoId);
+        iframe.src = url.toString();
+      } catch (e) { /* skip if URL parse fails */ }
+    }, i * 1200); // stagger each iframe by 1.2 seconds
   });
 
   // Auto-scroll loop
@@ -144,7 +146,8 @@ if (window.location.search.indexOf('kiosk') !== -1) {
 
   function scrollStep(timestamp) {
     if (!lastTimestamp) lastTimestamp = timestamp;
-    const elapsed = timestamp - lastTimestamp;
+    // Cap elapsed to 50ms so a stalled frame never causes a huge jump
+    const elapsed = Math.min(timestamp - lastTimestamp, 50);
     lastTimestamp = timestamp;
 
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
