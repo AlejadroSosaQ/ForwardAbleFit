@@ -122,10 +122,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Activate by visiting: https://forwardablefit.com/?kiosk
 if (window.location.search.indexOf('kiosk') !== -1) {
 
-  const TICK_MS         = 33;    // fire ~30 times per second
-  const PX_PER_TICK     = 1.27;  // 38 px/s ÷ 30 ticks = 1.27 px each tick
-  const PAUSE_AT_TOP    = 3000;  // ms to wait before each loop starts
-  const PAUSE_AT_BOTTOM = 2500;  // ms to pause at the bottom before resetting
+  const SCROLL_SPEED    = 38;   // px per second
+  const PAUSE_AT_TOP    = 3000; // ms to wait before each loop starts
+  const PAUSE_AT_BOTTOM = 2500; // ms to pause at the bottom before resetting
+
+  // iOS Safari compatibility helpers
+  function getScrollY() {
+    return window.pageYOffset !== undefined
+      ? window.pageYOffset
+      : (document.documentElement || document.body).scrollTop;
+  }
 
   // Enable autoplay + mute on all YouTube iframes — staggered to avoid CPU spike
   document.querySelectorAll('iframe[src*="youtube.com"]').forEach((iframe, i) => {
@@ -142,28 +148,53 @@ if (window.location.search.indexOf('kiosk') !== -1) {
     }, i * 1200); // stagger each iframe by 1.2 seconds
   });
 
-  // setInterval-based scroll — each tick moves a fixed number of pixels.
-  // Unlike requestAnimationFrame, missed ticks don't cause catch-up jumps,
-  // so heavy YouTube load can't make the scroll erratic.
-  let kioskTimer = null;
+  // Auto-scroll using requestAnimationFrame + Date.now() wall-clock timing.
+  //
+  // Why this combination?
+  //   - requestAnimationFrame is the correct animation API on iOS Safari;
+  //     setInterval gets throttled by the OS on battery-powered devices.
+  //   - Using Date.now() (instead of the rAF timestamp) gives real elapsed
+  //     wall-clock time, so the speed stays consistent even when frames are
+  //     delayed by heavy YouTube network activity.
+  //   - Capping elapsed at 100ms prevents a large jump if the browser was
+  //     genuinely frozen for a moment (e.g. during iframe reload).
 
-  function startKioskScroll() {
-    kioskTimer = setInterval(() => {
+  let kioskRunning = false;
+  let lastWallTime = null;
+
+  function scrollStep() {
+    if (!kioskRunning) return;
+
+    const now = Date.now();
+    if (lastWallTime !== null) {
+      const elapsed = Math.min(now - lastWallTime, 100); // cap at 100ms
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (window.scrollY >= maxScroll - 2) {
-        // Reached the bottom — pause, reset, then restart
-        clearInterval(kioskTimer);
-        kioskTimer = null;
+
+      if (getScrollY() >= maxScroll - 2) {
+        // Reached the bottom — pause, jump to top, then restart
+        kioskRunning = false;
+        lastWallTime = null;
         setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          setTimeout(startKioskScroll, PAUSE_AT_TOP);
+          window.scrollTo(0, 0); // instant reset; Safari handles smooth reset poorly
+          setTimeout(() => {
+            kioskRunning = true;
+            lastWallTime = null;
+            requestAnimationFrame(scrollStep);
+          }, PAUSE_AT_TOP);
         }, PAUSE_AT_BOTTOM);
-      } else {
-        window.scrollBy(0, PX_PER_TICK);
+        return;
       }
-    }, TICK_MS);
+
+      window.scrollBy(0, (SCROLL_SPEED * elapsed) / 1000);
+    }
+
+    lastWallTime = now;
+    requestAnimationFrame(scrollStep);
   }
 
-  // Wait before starting so the page can settle after load
-  setTimeout(startKioskScroll, PAUSE_AT_TOP);
+  // Wait before starting so the page can fully settle after load
+  setTimeout(() => {
+    kioskRunning = true;
+    requestAnimationFrame(scrollStep);
+  }, PAUSE_AT_TOP);
 }
